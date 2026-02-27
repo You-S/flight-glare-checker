@@ -153,9 +153,9 @@ def analyze_flight_data(df: pd.DataFrame) -> tuple:
     ]
     choices = [
         "夜間（太陽が出ていない）",
-        "右側(K席側)から眩しい",
+        "右側(K席側)が眩しい",
         "後方（機体に遮られるため眩しくない）",
-        "左側(A席側)から眩しい",
+        "左側(A席側)が眩しい",
         "正面（景色が見やすい）"
     ]
     pos_str = np.select(conditions, choices, default="不明")
@@ -188,8 +188,8 @@ def analyze_flight_data(df: pd.DataFrame) -> tuple:
     # 4. サマリー集計 (秒単位での微分積算)
     df['duration_sec'] = (-df['dt_utc'].diff(-1).dt.total_seconds()).fillna(0)
     
-    a_glaring_sec = df.loc[df['position_detail'] == "左側(A席側)から眩しい", 'duration_sec'].sum()
-    k_glaring_sec = df.loc[df['position_detail'] == "右側(K席側)から眩しい", 'duration_sec'].sum()
+    a_glaring_sec = df.loc[df['position_detail'] == "左側(A席側)が眩しい", 'duration_sec'].sum()
+    k_glaring_sec = df.loc[df['position_detail'] == "右側(K席側)が眩しい", 'duration_sec'].sum()
     front_sec = df.loc[df['position_detail'] == "正面（景色が見やすい）", 'duration_sec'].sum()
     back_sec = df.loc[df['position_detail'] == "後方（機体に遮られるため眩しくない）", 'duration_sec'].sum()
     night_sec = df.loc[df['position_detail'] == "夜間（太陽が出ていない）", 'duration_sec'].sum()
