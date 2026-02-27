@@ -1,0 +1,8 @@
+venv/
+.venv/
+__pycache__/
+*.csv
+.env
+.DS_Store
+.streamlit/
+test_fr.py

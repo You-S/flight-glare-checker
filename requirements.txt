@@ -1,0 +1,8 @@
+streamlit
+pandas
+numpy
+pvlib
+requests
+FlightRadarAPI
+beautifulsoup4
+brotli
