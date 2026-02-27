@@ -218,13 +218,26 @@ def main():
     
     col_input, col_btn = st.columns([3, 1])
     with col_input:
-        flight_number = st.text_input("便名を入力してください（例: JAL901, JL901, ANA15）", value="JL901")
+        flight_number_input = st.text_input("便名を入力してください（例: JL901, NH15）", value="JL901")
     with col_btn:
         st.write("") # アライメント用
         st.write("") 
         is_submitted = st.button("自動判定スタート", type="primary", use_container_width=True)
     
-    if is_submitted and flight_number:
+    if is_submitted and flight_number_input:
+        # 入力文字列の正規化（大文字化・空白削除）
+        flight_number = flight_number_input.upper().strip().replace(" ", "")
+        
+        # ユーザーフレンドリー対応：一般的な3レターコード(ICAO)を2レターコード(IATA)に自動変換
+        airline_map = {
+            "JAL": "JL", "ANA": "NH", "SKY": "BC", "ADO": "HD", 
+            "SNJ": "6J", "SFJ": "7G", "FDA": "JH", "APJ": "MM", "JJP": "GK"
+        }
+        for icao, iata in airline_map.items():
+            if flight_number.startswith(icao):
+                flight_number = flight_number.replace(icao, iata, 1)
+                break
+
         with st.spinner(f"FlightRadar24から '{flight_number}' のフライトデータを取得し、解析を行っています..."):
             df_flight, flight_info = fetch_flight_data(flight_number)
             
