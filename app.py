@@ -303,7 +303,9 @@ def main():
             
             # --- サマリー (KPI) ---
             st.header("📊 フライト眩しさ サマリー")
-            st.caption(f"フライト総時間 (10,000ft以上) : 約 {summary['total_min']} 分")
+            
+            st.metric(label="⏱️ 巡航時のフライト総時間 (高度10,000ft以上)", value=f"{summary['total_min']} 分")
+            st.write("") # 少し余白
             
             col1, col2, col3 = st.columns(3)
             with col1:
