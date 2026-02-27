@@ -311,7 +311,7 @@ def main():
             with col2:
                 st.metric(label="➡️ K席側(右側)が眩しい時間", value=f"{summary['k_glaring_min']} 分")
             with col3:
-                st.metric(label="✨ 景色を楽しめる時間", value=f"{summary['not_glaring_min']} 分", 
+                st.metric(label="✨ どちらでも景色を楽しめる時間", value=f"{summary['not_glaring_min']} 分", 
                           help=f"内訳 - 正面: {summary['front_min']}分, 後方: {summary['back_min']}分, 夜間: {summary['night_min']}分")
             
             st.markdown("---")
