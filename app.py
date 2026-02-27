@@ -230,8 +230,29 @@ def main():
         
         # ユーザーフレンドリー対応：一般的な3レターコード(ICAO)を2レターコード(IATA)に自動変換
         airline_map = {
-            "JAL": "JL", "ANA": "NH", "SKY": "BC", "ADO": "HD", 
-            "SNJ": "6J", "SFJ": "7G", "FDA": "JH", "APJ": "MM", "JJP": "GK"
+            # 日本のエアライン
+            "JAL": "JL", "ANA": "NH", "SKY": "BC", "ADO": "HD", "SNJ": "6J", 
+            "SFJ": "7G", "FDA": "JH", "APJ": "MM", "JJP": "GK", "JTA": "NU", 
+            "RAC": "RC", "JAC": "JC", "AHX": "MZ", "NCA": "KZ", "IBX": "FW", 
+            "ORC": "OC", "SJO": "IJ", "TZP": "ZG",
+            # Oneworld
+            "AAL": "AA", "BAW": "BA", "CPA": "CX", "FIN": "AY", "IBE": "IB",
+            "MAS": "MH", "QFA": "QF", "QTR": "QR", "RAM": "AT", "RJA": "RJ",
+            "ALK": "UL", "ASQ": "AS",
+            # Star Alliance
+            "ACA": "AC", "CCA": "CA", "AIC": "AI", "ANZ": "NZ", "AAR": "OZ",
+            "AUA": "OS", "AVA": "AV", "BEL": "SN", "CMP": "CM", "EVA": "BR",
+            "DLH": "LH", "LOT": "LO", "SIA": "SQ", "SAA": "SA", "SWR": "LX",
+            "TAP": "TP", "THA": "TG", "THY": "TK", "UAL": "UA", "CSZ": "ZH",
+            "CRO": "OU", "EGY": "MS", "ETH": "ET", "AEE": "A3",
+            # SkyTeam
+            "ARG": "AR", "AMX": "AM", "AEA": "UX", "AFR": "AF", "DAL": "DL",
+            "CAL": "CI", "CES": "MU", "CSA": "OK", "GIA": "GA", "KQA": "KQ",
+            "KLM": "KL", "KOR": "KE", "MEA": "ME", "SAS": "SK", "SVA": "SV",
+            "TAR": "RO", "VNM": "VN", "VIR": "VS",
+            # その他主要・リクエスト特定（中国南方航空、スターラックス等）
+            "CSN": "CZ", "SJX": "JX", "UAE": "EK", "ETD": "EY", "JST": "JQ",
+            "SWA": "WN", "RYR": "FR", "HKE": "UO"
         }
         for icao, iata in airline_map.items():
             if flight_number.startswith(icao):
