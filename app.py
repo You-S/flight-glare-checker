@@ -10,7 +10,7 @@ from FlightRadar24 import FlightRadar24API
 # PEP8準拠
 # Page config
 st.set_page_config(
-    page_title="Flight Glare Checker - 飛行機の窓際まぶしさ判定",
+    page_title="Sora-Mado | 飛行機の窓側選びサポート",
     page_icon="✈️",
     layout="wide"
 )
@@ -209,20 +209,18 @@ def analyze_flight_data(df: pd.DataFrame) -> tuple:
     return df, timeline, summary
 
 def main():
-    st.title("☀️ Flight Glare Checker - 飛行機の窓際まぶしさ判定")
-    st.markdown("""
-        このアプリは、Flightradar24のデータを元に、フライト中のどの時間帯にどちらの窓から太陽光が入るかをシミュレーションします。
-        便名を入力して「自動判定スタート」を押すだけで直近のフライト履歴を自動解析します。
-        座席選びの参考にしてください（高度10,000フィート以上の巡航中データのみを対象としています）。
-    """)
+    st.image("header.jpg", use_container_width=True)
+    st.title("Sora-Mado ✈️")
+    st.markdown("### 飛行機の窓側座席選びをサポート")
+    st.markdown("旅の景色を最大限に楽しむための、眩しさ判定シミュレーター")
     
     col_input, col_btn = st.columns([3, 1])
     with col_input:
-        flight_number_input = st.text_input("便名を入力してください（例: JL901, NH15）", value="JL901")
+        flight_number_input = st.text_input("便名を入力（例: JL901）", value="JL901")
     with col_btn:
         st.write("") # アライメント用
         st.write("") 
-        is_submitted = st.button("自動判定スタート", type="primary", use_container_width=True)
+        is_submitted = st.button("シミュレーション開始", type="primary", use_container_width=True)
     
     if is_submitted and flight_number_input:
         # 入力文字列の正規化（大文字化・空白削除）
@@ -281,7 +279,7 @@ def main():
                     st.markdown("---")
             
                     # --- 最終結論 ---
-                    st.header("🎯 最終結論（おすすめの座席）")
+                    st.header("🎯 おすすめの窓側座席")
                     
                     total_m = summary["total_min"]
                     a_m = summary["a_glaring_min"]
@@ -289,31 +287,31 @@ def main():
                     diff_m = abs(a_m - k_m)
                     
                     if (a_m < total_m * 0.05 and a_m < 10) and (k_m < total_m * 0.05 and k_m < 10):
-                        st.success("✨ どちらの席も眩しい時間はごくわずかで快適なフライトです！お好みの景色が見える席を選んでOKです。")
+                        st.success("### ✨ どちらの座席でもOK！\n\n眩しい時間はごくわずかです。お好みの景色が見える窓側席を選んで快適なフライトを。")
                     elif diff_m < total_m * 0.10 and diff_m <= 15:
-                        st.info("⚖️ A席・K席で眩しさに大きな差はありません。時間帯によってどちらも同じくらいの日差しを受ける可能性があります。")
+                        st.info("### ⚖️ A席・K席で眩しさに大きな差はありません\n\n時間帯によってどちらも同じくらいの日差しを受ける可能性があります。")
                     elif a_m > k_m:
-                        st.info("💡 **右側（K席側）** を予約した方が、眩しい時間が短く快適に過ごせます。")
+                        st.success("### 💡 おすすめ: 右側（K席）\n\n右側の窓側席を予約した方が、眩しい時間が短く、景色を快適に楽しめます。")
                     elif k_m > a_m:
-                        st.info("💡 **左側（A席側）** を予約した方が、眩しい時間が短く快適に過ごせます。")
+                        st.success("### 💡 おすすめ: 左側（A席）\n\n左側の窓側席を予約した方が、眩しい時間が短く、景色を快適に楽しめます。")
                     else:
-                        st.warning("⚖️ A席・K席での明確な有利不利はありません。")
+                        st.info("### ⚖️ A席・K席での明確な有利不利はありません")
                         
                     st.markdown("---")
             
             # --- サマリー (KPI) ---
-            st.header("📊 フライト眩しさ サマリー")
+            st.header("📊 フライトサマリー")
             
             st.metric(label="⏱️ 巡航時のフライト総時間 (高度10,000ft以上)", value=f"{summary['total_min']} 分")
             st.write("") # 少し余白
             
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric(label="⬅️ A席側(左側)が眩しい時間", value=f"{summary['a_glaring_min']} 分")
+                st.metric(label="☀️ A席側(左側)の眩しい時間", value=f"{summary['a_glaring_min']} 分")
             with col2:
-                st.metric(label="➡️ K席側(右側)が眩しい時間", value=f"{summary['k_glaring_min']} 分")
+                st.metric(label="☀️ K席側(右側)の眩しい時間", value=f"{summary['k_glaring_min']} 分")
             with col3:
-                st.metric(label="✨ どちらでも景色を楽しめる時間", value=f"{summary['not_glaring_min']} 分", 
+                st.metric(label="✨ 景色のチャンス（眩しくない時間）", value=f"{summary['not_glaring_min']} 分", 
                           help=f"内訳 - 正面: {summary['front_min']}分, 後方: {summary['back_min']}分, 夜間: {summary['night_min']}分")
             
             st.markdown("---")
@@ -338,6 +336,9 @@ def main():
                 # 存在しない列は除外
                 exist_cols = [c for c in show_cols if c in df.columns]
                 st.dataframe(df[exist_cols], use_container_width=True)
+
+    # フッター
+    st.markdown("<div style='text-align: center; color: gray; margin-top: 50px; margin-bottom: 20px;'>Good flights, Good views.</div>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
