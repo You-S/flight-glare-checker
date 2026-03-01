@@ -419,43 +419,43 @@ def main():
                         
                     st.markdown("---")
             
-            # --- サマリー (KPI) ---
-            st.header("📊 フライトサマリー")
-            
-            st.metric(label="⏱️ 巡航時のフライト総時間 (高度10,000ft以上)", value=f"{summary['total_min']} 分")
-            st.write("") # 少し余白
-            
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric(label="☀️ 眩しい時間 (左側/A席)", value=f"{summary['a_glaring_min']} 分")
-            with col2:
-                st.metric(label="☀️ 眩しい時間 (右側/K席)", value=f"{summary['k_glaring_min']} 分")
-            with col3:
-                st.metric(label="✨ 景色のチャンス（眩しくない時間）", value=f"{summary['not_glaring_min']} 分", 
-                          help=f"内訳 - 正面: {summary['front_min']}分, 後方: {summary['back_min']}分, 夜間: {summary['night_min']}分, 夕焼け: {summary['low_sun_min']}分, 頭上: {summary['high_sun_min']}分")
-            
-            st.markdown("---")
-            
-            # --- タイムライン ---
-            st.header("⏱️ 時間帯ごとの詳細（タイムライン）")
-            # タイムラインの表示用整形
-            display_tl = timeline[['時間帯', 'position_detail']].rename(columns={'position_detail': '眩しさの状況'})
-            
-            # 行ごとに色を変える等の装飾も可能だが、今回はシンプルにテーブル表示
-            st.table(display_tl)
-            
-            st.markdown("---")
-            
-            # --- 詳細データ(生データ+解析結果) ---
-            with st.expander("詳細データを確認する"):
-                show_cols = [
-                    'datetime_jst', 'Altitude', 'Direction', 
-                    'sun_azimuth_deg', 'sun_altitude_deg', 'relative_angle_deg', 
-                    'is_glaring', 'position_detail'
-                ]
-                # 存在しない列は除外
-                exist_cols = [c for c in show_cols if c in df.columns]
-                st.dataframe(df[exist_cols], use_container_width=True)
+                    # --- サマリー (KPI) ---
+                    st.header("📊 フライトサマリー")
+                    
+                    st.metric(label="⏱️ 巡航時のフライト総時間 (高度10,000ft以上)", value=f"{summary['total_min']} 分")
+                    st.write("") # 少し余白
+                    
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.metric(label="☀️ 眩しい時間 (左側/A席)", value=f"{summary['a_glaring_min']} 分")
+                    with col2:
+                        st.metric(label="☀️ 眩しい時間 (右側/K席)", value=f"{summary['k_glaring_min']} 分")
+                    with col3:
+                        st.metric(label="✨ 景色のチャンス（眩しくない時間）", value=f"{summary['not_glaring_min']} 分", 
+                                  help=f"内訳 - 正面: {summary['front_min']}分, 後方: {summary['back_min']}分, 夜間: {summary['night_min']}分, 夕焼け: {summary['low_sun_min']}分, 頭上: {summary['high_sun_min']}分")
+                    
+                    st.markdown("---")
+                    
+                    # --- タイムライン ---
+                    st.header("⏱️ 時間帯ごとの詳細（タイムライン）")
+                    # タイムラインの表示用整形
+                    display_tl = timeline[['時間帯', 'position_detail']].rename(columns={'position_detail': '眩しさの状況'})
+                    
+                    # 行ごとに色を変える等の装飾も可能だが、今回はシンプルにテーブル表示
+                    st.table(display_tl)
+                    
+                    st.markdown("---")
+                    
+                    # --- 詳細データ(生データ+解析結果) ---
+                    with st.expander("詳細データを確認する"):
+                        show_cols = [
+                            'datetime_jst', 'Altitude', 'Direction', 
+                            'sun_azimuth_deg', 'sun_altitude_deg', 'relative_angle_deg', 
+                            'is_glaring', 'position_detail'
+                        ]
+                        # 存在しない列は除外
+                        exist_cols = [c for c in show_cols if c in df.columns]
+                        st.dataframe(df[exist_cols], use_container_width=True)
 
     # フッター
     st.markdown("<div style='text-align: center; color: gray; margin-top: 50px; margin-bottom: 20px;'>Good flights, Good views.</div>", unsafe_allow_html=True)
