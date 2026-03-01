@@ -154,6 +154,8 @@ def analyze_flight_data(df: pd.DataFrame) -> tuple:
     FlightRadar24等のDataFrameを読み込み、ベクトル化処理を用いて一括で眩しさ判定を行う。
     戻り値: (df, timeline, summary_dict)
     """
+    if df is None or df.empty:
+        return None, None, None
     
     # 1. 前処理
     df[['lat', 'lon']] = df['Position'].str.split(',', expand=True).astype(float)
@@ -318,10 +320,10 @@ def main():
     st.markdown(header_html, unsafe_allow_html=True)
     
     st.markdown("""
-        このアプリは、Flightradar24のデータを元に、フライト中のどの時間帯にどちらの窓から太陽光が入るかをシミュレーションします。
-        便名を入力して「シミュレーション開始」を押すだけで直近のフライト履歴を自動解析します。
-        ※一部の機材（DHC400などのプロペラ機等）はデータが取得できず、解析できない場合があります。
-    """)
+        このアプリは、Flightradar24のデータを元に、フライト中のどの時間帯にどちらの窓から太陽光が入るかをシミュレーションします。<br>
+        便名を入力して「シミュレーション開始」を押すだけで直近のフライト履歴を自動解析します。<br>
+        <span style="font-size: 0.9em; color: gray;">※一部の機材（DHC400などのプロペラ機等）はデータが取得できず、解析できない場合があります。</span>
+    """, unsafe_allow_html=True)
     
     col_input, col_btn = st.columns([3, 1])
     with col_input:
